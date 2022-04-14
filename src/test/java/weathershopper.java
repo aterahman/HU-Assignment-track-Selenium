@@ -2,6 +2,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.testng.SkipException;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeSuite;
@@ -12,6 +13,9 @@ import java.util.concurrent.TimeUnit;
 public class weathershopper
 {
     WebDriver driver;
+    boolean moisturizer = false;
+    boolean sunscreen = false;
+
 
     //method to initilise WebDriver and the chrome driver
     @BeforeSuite
@@ -88,35 +92,81 @@ public class weathershopper
 
         //making decision as per the information box
         if(temperature<19)
-            buymoisturizer();
-        else
-            buysunscreen();
+            moisturizer = true;
+        else if(temperature>34)
+            sunscreen = true;
+        else {
+            driver.navigate().refresh();
+            gettemperature();
+            decision();
+        }
 
     }
 
-    //method to go to the moisturizer page
+    @Test(priority = 3)
     public void buymoisturizer()throws InterruptedException
     {
-        //getting the buy moisturizer button
-        WebElement buymoisturizers = getelement("/html/body/div[1]/div[3]/div[1]/a/button");
+        if(moisturizer) {
+            //getting the buy moisturizer button
+            WebElement buymoisturizers = getelement("/html/body/div[1]/div[3]/div[1]/a/button");
 
-        //clicking on the button
-        buymoisturizers.click();
+            //clicking on the button
+            buymoisturizers.click();
+
+            TimeUnit.MILLISECONDS.sleep(3000);
+        }
+        else
+        {
+            //skips the test
+            throw new SkipException("Weather is over 19 degrees");
+        }
+
+    }
+
+
+
+    //method to go to the sunscreen page
+    @Test(priority = 4)
+    public void buysunscreen()throws InterruptedException
+    {
+        if(sunscreen)
+        {
+            //getting the buy sunscreens button
+            WebElement buysunscreens = getelement("/html/body/div[1]/div[3]/div[2]/a/button");
+
+            //clicking on the button
+            buysunscreens.click();
+
+            TimeUnit.MILLISECONDS.sleep(3000);
+        }
+        else
+        {
+            //skips the test
+            throw new SkipException("Weather is under 19 degrees");
+        }
+    }
+
+    //method to add sunscreens to the cart
+    @Test(priority = 5)
+    public void addsunscreen()throws InterruptedException
+    {
+        //gets the element of i next to the "Sunscreen" title"
+        WebElement i = getelement("/html/body/div[1]/div[1]/span");
+
+        //clicks on element
+        i.click();
 
         TimeUnit.MILLISECONDS.sleep(3000);
 
+        //adding least expensive spf 50 sunscreen
+        WebElement spf50 = getelement("/html/body/div[1]/div[3]/div[1]/button");
+        spf50.click();
 
-    }
+        TimeUnit.MILLISECONDS.sleep(3000);
 
-    //method to go to the sunscreen page
-    public void buysunscreen()throws InterruptedException
-    {
-
-        //getting the buy sunscreens button
-        WebElement buysunscreens = getelement("/html/body/div[1]/div[3]/div[2]/a/button");
-
-        //clicking on the button
-        buysunscreens.click();
+        //adding least expensive spf 30 sunscreen
+        WebElement spf30 = getelement("/html/body/div[1]/div[2]/div[3]/button");
+        spf30.click();
 
         TimeUnit.MILLISECONDS.sleep(3000);
 
@@ -127,7 +177,10 @@ public class weathershopper
     @AfterClass
     public void close()
     {
+        //closes the window
         driver.close();
+
+        //closes the driver
         driver.quit();
     }
 }
