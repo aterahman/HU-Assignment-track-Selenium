@@ -6,8 +6,8 @@ import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeSuite;
 import org.testng.annotations.Test;
-
 import java.util.concurrent.TimeUnit;
+
 
 public class weathershopper
 {
@@ -46,10 +46,12 @@ public class weathershopper
 
     //method to get the temperature
     @Test(priority = 1)
-    public void gettemperature()
+    public int gettemperature()throws InterruptedException
     {
         //gets the element that displays the temperature on the screen
         WebElement temperature = getelement("/html/body/div/div[2]/div/span");
+
+        TimeUnit.MILLISECONDS.sleep(3000);
 
         //gets the text of the element storing the temperature
         String temp = temperature.getText();
@@ -68,10 +70,41 @@ public class weathershopper
         }
 
         int digitaltemperature = Integer.parseInt(temperaturedigits);
-        System.out.println(digitaltemperature);
+        return digitaltemperature;
     }
 
-    
+    //method to make decision based on temperature
+    @Test(priority = 2)
+    public void decision()throws InterruptedException
+    {
+        //gets the element of i next to the "Current Temperature" title
+        WebElement i = getelement("/html/body/div/div[1]/span");
+
+        //clicks on the element
+        i.click();
+
+        TimeUnit.MILLISECONDS.sleep(5000);
+
+        int temperature = gettemperature();
+
+        //making decision as per the information box
+        if(temperature<19)
+            moisturize();
+        else
+            sunscreen();
+
+    }
+
+    public void moisturize()
+    {
+
+    }
+
+    public void sunscreen()
+    {
+
+    }
+
 
     //method to close the driver
     @AfterClass
