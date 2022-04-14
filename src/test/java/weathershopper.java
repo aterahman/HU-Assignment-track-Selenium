@@ -142,34 +142,81 @@ public class weathershopper
         else
         {
             //skips the test
-            throw new SkipException("Weather is under 19 degrees");
+            throw new SkipException("Weather is under 34 degrees");
+        }
+    }
+
+    //method to add moisturizers to the cart
+    @Test(priority = 5)
+    public void addmoisturizer()throws InterruptedException
+    {
+        if(moisturizer)
+        {
+            //gets the element of i next to the "Moisturizer" title
+            WebElement i = getelement("/html/body/div[1]/div[1]/span");
+
+            //clicking on element
+            i.click();
+
+            TimeUnit.MILLISECONDS.sleep(3000);
+
+            //adding least expensive aloe moisturizer to cart
+            WebElement aloe = getelement("/html/body/div[1]/div[2]/div[3]/button");
+            aloe.click();
+
+            TimeUnit.MILLISECONDS.sleep(3000);
+
+            //adding least expensive almond moisturizer to cart
+            WebElement almond = getelement("/html/body/div[1]/div[2]/div[1]/button");
+            almond.click();
+
+            TimeUnit.MILLISECONDS.sleep(3000);
+
+            //clicking on the cart button
+            WebElement cart = getelement("/html/body/nav/ul/button");
+            cart.click();
+
+        }
+        else
+        {
+            throw new SkipException("Temperature is over 19 degrees");
         }
     }
 
     //method to add sunscreens to the cart
-    @Test(priority = 5)
+    @Test(priority = 6)
     public void addsunscreen()throws InterruptedException
     {
-        //gets the element of i next to the "Sunscreen" title"
-        WebElement i = getelement("/html/body/div[1]/div[1]/span");
+        if(sunscreen)
+        {
+            //gets the element of i next to the "Sunscreen" title"
+            WebElement i = getelement("/html/body/div[1]/div[1]/span");
 
-        //clicks on element
-        i.click();
+            //clicks on element
+            i.click();
 
-        TimeUnit.MILLISECONDS.sleep(3000);
+            TimeUnit.MILLISECONDS.sleep(3000);
 
-        //adding least expensive spf 50 sunscreen
-        WebElement spf50 = getelement("/html/body/div[1]/div[3]/div[1]/button");
-        spf50.click();
+            //adding least expensive spf 50 sunscreen
+            WebElement spf50 = getelement("/html/body/div[1]/div[3]/div[1]/button");
+            spf50.click();
 
-        TimeUnit.MILLISECONDS.sleep(3000);
+            TimeUnit.MILLISECONDS.sleep(3000);
 
-        //adding least expensive spf 30 sunscreen
-        WebElement spf30 = getelement("/html/body/div[1]/div[2]/div[3]/button");
-        spf30.click();
+            //adding least expensive spf 30 sunscreen
+            WebElement spf30 = getelement("/html/body/div[1]/div[2]/div[3]/button");
+            spf30.click();
 
-        TimeUnit.MILLISECONDS.sleep(3000);
+            TimeUnit.MILLISECONDS.sleep(3000);
 
+            //clicking on the cart button
+            WebElement cart = getelement("/html/body/nav/ul/button");
+            cart.click();
+        }
+        else
+        {
+            throw new SkipException("Weather is under 34 degrees");
+        }
     }
 
 
