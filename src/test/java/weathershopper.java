@@ -31,7 +31,6 @@ public class weathershopper
         //maximizing the window
         driver.manage().window().maximize();
 
-        driver.manage().timeouts().implicitlyWait(3000, TimeUnit.MILLISECONDS);
     }
 
     //recurring method ot find the desired element by providing xpath
@@ -83,25 +82,43 @@ public class weathershopper
         //clicks on the element
         i.click();
 
-        TimeUnit.MILLISECONDS.sleep(5000);
+        TimeUnit.MILLISECONDS.sleep(3000);
 
         int temperature = gettemperature();
 
         //making decision as per the information box
         if(temperature<19)
-            moisturize();
+            buymoisturizer();
         else
-            sunscreen();
+            buysunscreen();
 
     }
 
-    public void moisturize()
+    //method to go to the moisturizer page
+    public void buymoisturizer()throws InterruptedException
     {
+        //getting the buy moisturizer button
+        WebElement buymoisturizers = getelement("/html/body/div[1]/div[3]/div[1]/a/button");
+
+        //clicking on the button
+        buymoisturizers.click();
+
+        TimeUnit.MILLISECONDS.sleep(3000);
+
 
     }
 
-    public void sunscreen()
+    //method to go to the sunscreen page
+    public void buysunscreen()throws InterruptedException
     {
+
+        //getting the buy sunscreens button
+        WebElement buysunscreens = getelement("/html/body/div[1]/div[3]/div[2]/a/button");
+
+        //clicking on the button
+        buysunscreens.click();
+
+        TimeUnit.MILLISECONDS.sleep(3000);
 
     }
 
