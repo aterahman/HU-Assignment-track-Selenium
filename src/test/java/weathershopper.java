@@ -1,6 +1,5 @@
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import org.apache.commons.io.FileUtils;
+import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.testng.SkipException;
 import org.testng.annotations.AfterClass;
@@ -9,15 +8,13 @@ import org.testng.annotations.BeforeSuite;
 import org.testng.annotations.Test;
 
 import java.io.FileNotFoundException;
-import java.io.FileWriter;
-import java.io.PrintWriter;
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.concurrent.TimeUnit;
-import java.io.*;
 import java.lang.String;
 
-
+//this is the base class for the tests
 public class weathershopper
 {
     WebDriver driver;
@@ -144,6 +141,7 @@ public class weathershopper
 
             //clicking on the button
             buysunscreens.click();
+            new productlist();
 
             TimeUnit.MILLISECONDS.sleep(3000);
         }
@@ -154,8 +152,50 @@ public class weathershopper
         }
     }
 
-    //method to add moisturizers to the cart
     @Test(priority = 5)
+    public void storeproducts() {
+        ArrayList<String> productnames = new ArrayList<>();
+
+        int num = 0;
+
+        for (int i = 2; i <= 3; i++) {
+            for (int j = 1; j <= 3; j++) {
+                String xlpath = "/html/body/div[1]/div[" + Integer.toString(i) + "]/div[" + Integer.toString(j) + "]/p[1]";
+                WebElement productname = getelement(xlpath);
+                productnames.add(productname.getText());
+            }
+        }
+        System.out.println(productnames);
+    }
+
+    @Test(priority = 6)
+    public void storeprices()
+    {
+        ArrayList<String> productprices = new ArrayList<>();
+
+        for(int i=2;i<=3;i++)
+        {
+            for(int j = 1 ; j<=3;j++)
+            {
+                String xlpath = "/html/body/div[1]/div["+Integer.toString(i)+"]/div["+ Integer.toString(j)+"]/p[2]";
+                WebElement productprice = getelement(xlpath);
+                String p  = productprice.getText();
+                String price  = "";
+                for(int k = 0; k<p.length();k++)
+                {
+                    char ch = p.charAt(k);
+                    if(Character.isDigit(ch))
+                        price=price+ch;
+                }
+                productprices.add(price);
+
+            }
+        }
+        System.out.println(productprices);
+    }
+
+    //method to add moisturizers to the cart
+    @Test(priority = 7)
     public void addmoisturizer()throws InterruptedException
     {
         if(moisturizer)
@@ -180,9 +220,6 @@ public class weathershopper
 
             TimeUnit.MILLISECONDS.sleep(3000);
 
-            //clicking on the cart button
-            WebElement cart = getelement("/html/body/nav/ul/button");
-            cart.click();
         }
         else
         {
@@ -191,7 +228,7 @@ public class weathershopper
     }
 
     //method to add sunscreens to the cart
-    @Test(priority = 6)
+    @Test(priority = 8)
     public void addsunscreen()throws InterruptedException
     {
         if(sunscreen)
@@ -216,9 +253,6 @@ public class weathershopper
 
             TimeUnit.MILLISECONDS.sleep(3000);
 
-            //clicking on the cart button
-            WebElement cart = getelement("/html/body/nav/ul/button");
-            cart.click();
         }
         else
         {
@@ -227,18 +261,20 @@ public class weathershopper
     }
 
 
-    @Test(priority = 7)
-    public void cartaccess()throws FileNotFoundException
+    @Test(priority = 9)
+    public void cartaccess()throws FileNotFoundException,InterruptedException
     {
+        //getting the element of the cart button
         WebElement cartbutton = getelement("/html/body/nav/ul/button");
 
+        //clicking on the button
         cartbutton.click();
 
-        WebElement paywithcardbutton = getelement("/html/body/div[1]/div[3]/form/button/span");
+        TimeUnit.MILLISECONDS.sleep(3000);
 
-        paywithcardbutton.click();
     }
 
+    @Test(priority = 10)
     public void payment()
     {
 
@@ -269,6 +305,34 @@ public class weathershopper
 
     }
 
+    //method to take screenshots on passing
+    public void passed()
+    {
+        File scrfile = ((TakesScreenshot)driver).getScreenshotAs(OutputType.FILE);
+        try
+        {
+            FileUtils.copyFile(scrfile, new File("src\\Screenshots\\Passed"));
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+
+    }
+
+    //method to take screenshots on failure
+    public void failed()
+    {
+        File scrfile = ((TakesScreenshot)driver).getScreenshotAs(OutputType.FILE);
+        try
+        {
+            FileUtils.copyFile(scrfile, new File("src\\Screenshots\\Failed"));
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+    }
 
     //method to close the driver
     @AfterClass
