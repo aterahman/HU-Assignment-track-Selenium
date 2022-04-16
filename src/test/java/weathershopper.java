@@ -7,7 +7,15 @@ import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeSuite;
 import org.testng.annotations.Test;
+
+import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.PrintWriter;
+import java.io.File;
+import java.util.Scanner;
 import java.util.concurrent.TimeUnit;
+import java.io.*;
+import java.lang.String;
 
 
 public class weathershopper
@@ -175,7 +183,6 @@ public class weathershopper
             //clicking on the cart button
             WebElement cart = getelement("/html/body/nav/ul/button");
             cart.click();
-
         }
         else
         {
@@ -217,6 +224,49 @@ public class weathershopper
         {
             throw new SkipException("Weather is under 34 degrees");
         }
+    }
+
+
+    @Test(priority = 7)
+    public void cartaccess()throws FileNotFoundException
+    {
+        WebElement cartbutton = getelement("/html/body/nav/ul/button");
+
+        cartbutton.click();
+
+        WebElement paywithcardbutton = getelement("/html/body/div[1]/div[3]/form/button/span");
+
+        paywithcardbutton.click();
+    }
+
+    public void payment()
+    {
+
+
+        WebElement emailbox = getelement("/html/body/div[3]/form/div[2]/div/div[4]/div/div[1]/div/input");
+
+        emailbox.sendKeys("abc@abc.com");
+
+
+        Scanner ob = new Scanner("src//main//java//resources//carddetails.csv");
+        String p ="";
+        ob.useDelimiter(",");
+        String cardnumber="";
+        String month = "";
+        String year = "";
+        String cvv ="";
+        while(ob.hasNext())
+        {
+            p = ob.next();
+            String[] value = p.split(",");
+            cardnumber = value[0];
+            month = value[1];
+            year = value[2];
+            cvv = value[3];
+        }
+
+        System.out.println(cardnumber);
+
     }
 
 
