@@ -4,6 +4,7 @@ import org.testng.annotations.Test;
 
 import java.util.ArrayList;
 
+//extended class to store and compare product prices and select the least expensive ones
 public class productlist extends weathershopper {
 
     //first row names
@@ -36,7 +37,6 @@ public class productlist extends weathershopper {
     ///html/body/div[1]/div[3]/div[2]/button
     ///html/body/div[1]/div[3]/div[3]/button
 
-    //storing all the details in a workbook
 
 
    public ArrayList<String> productnames = new ArrayList<>();
@@ -56,6 +56,7 @@ public class productlist extends weathershopper {
    public ArrayList<WebElement> spf50buttons = new ArrayList<>();
 
 
+   //method to store product names into a single array list
     @Test(priority = 5)
     public void storeproducts() {
 
@@ -69,6 +70,7 @@ public class productlist extends weathershopper {
         log.info("The products on the screen are "+productnames);
     }
 
+    //method to store product prices into a single array list
     @Test(priority = 6)
     public void storeprices() {
         for (int i = 2; i <= 3; i++) {
@@ -89,6 +91,7 @@ public class productlist extends weathershopper {
         log.info("The prices of the prducts are "+productprices);
     }
 
+    //method to store the buttons of the products into a single array list
     @Test(priority = 7)
     public void storebuttons() {
 
@@ -101,6 +104,7 @@ public class productlist extends weathershopper {
         }
     }
 
+    //method to split products into different array lists based on their type
     @Test(priority = 8)
     public void sortproducts() {
         for (int i = 0; i < productnames.size(); i++) {
@@ -167,6 +171,12 @@ public class productlist extends weathershopper {
             log.info("It has been added to cart");
             almondbuttons.get(leastalmondprice).click();
 
+            leastexpensiveproduct1=aloe.get(leastaloeprice);
+            leastexpensiveproduct2=almond.get(leastalmondprice);
+
+            System.out.println(leastexpensiveproduct1);
+            System.out.println(leastexpensiveproduct2);
+
         } else {
             throw new SkipException("");
         }
@@ -207,6 +217,12 @@ public class productlist extends weathershopper {
             log.info("Least expensive SPF50 product is : "+spf50.get(leastspf50price) +" at Rs"+spf50price.get(leastspf50price));
             log.info("It has been added to cart");
             spf50buttons.get(leastspf50price).click();
+
+            leastexpensiveproduct1=spf30.get(leastspf30price);
+            leastexpensiveproduct2=spf50.get(leastspf50price);
+
+            System.out.println(leastexpensiveproduct1);
+            System.out.println(leastexpensiveproduct2);
 
         }
 
