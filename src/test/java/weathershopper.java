@@ -1,11 +1,14 @@
 import org.apache.commons.io.FileUtils;
+import org.apache.poi.xssf.usermodel.XSSFCell;
+import org.apache.poi.xssf.usermodel.XSSFRow;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.testng.SkipException;
 import org.testng.annotations.*;
 
-import java.io.FileNotFoundException;
-import java.io.File;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.concurrent.TimeUnit;
@@ -165,72 +168,6 @@ public class weathershopper
         }
     }
 
-//    @Test(priority = 6)
-//    public void setproduct()
-//    {
-//        productlist ob = new productlist();
-//        ob.storeproducts();
-//        ob.storeprices();
-//        ob.storebuttons();
-//        ob.sortproducts();
-//    }
-
-
-
-    //method to add moisturizers to the cart
-//    @Test(priority = 7)
-//    public void addmoisturizer()throws InterruptedException
-//    {
-//        if(moisturizer)
-//        {
-//            //gets the element of i next to the "Moisturizer" title
-//            WebElement i = getelement("/html/body/div[1]/div[1]/span");
-//
-//            //clicking on element
-//            i.click();
-//
-//            TimeUnit.MILLISECONDS.sleep(3000);
-//
-//            //adding least expensive aloe moisturizer to cart
-//            WebElement aloe = getelement("/html/body/div[1]/div[2]/div[3]/button");
-//            aloe.click();
-//
-//            TimeUnit.MILLISECONDS.sleep(3000);
-//
-//            //adding least expensive almond moisturizer to cart
-//            WebElement almond = getelement("/html/body/div[1]/div[2]/div[1]/button");
-//            almond.click();
-//
-//            TimeUnit.MILLISECONDS.sleep(3000);
-//
-//        }
-//        else
-//        {
-//            throw new SkipException("Temperature is over 19 degrees");
-//        }
-//    }
-
-    //method to add sunscreens to the cart
-//    @Test(priority = 8)
-//    public void addsunscreen()throws InterruptedException
-//    {
-//        if(sunscreen)
-//        {
-//            //gets the element of i next to the "Sunscreen" title"
-//            WebElement i = getelement("/html/body/div[1]/div[1]/span");
-//
-//            //clicks on element
-//            i.click();
-//
-//            TimeUnit.MILLISECONDS.sleep(3000);
-//
-//        }
-//        else
-//        {
-//            throw new SkipException("Weather is under 34 degrees");
-//        }
-//    }
-
 
     @Test(priority = 11)
     public void cartaccess()throws FileNotFoundException,InterruptedException
@@ -245,69 +182,68 @@ public class weathershopper
 
     }
 
+    String cardnumber="";
+    String month = "";
+    String year = "";
+    String cvv ="";
+    String zipcode = "";
+
     @Test(priority = 12)
-    public void payment()throws InterruptedException
+    public void excel()throws FileNotFoundException, IOException {
+        String path = "C:\\Users\\aterahman\\HU_assignment_Track_Selenium\\src\\main\\resources\\carddetails.csv";
+        BufferedReader br = new BufferedReader(new FileReader(path));
+        String line = "";
+        while ((line = br.readLine()) != null)
+        {
+            String[] values = line.split(",");
+            cardnumber = values[0];
+            month = values[1];
+            year  = values[2];
+            cvv = values[3];
+            zipcode=values[4];
+
+        }
+    }
+
+
+    //method to enter payment details and do the payment
+    @Test(priority = 13)
+    public void payment()throws InterruptedException,FileNotFoundException, IOException
     {
         WebElement paywithcard = getelement("/html/body/div[1]/div[3]/form/button");
 
         paywithcard.click();
 
-        driver.manage().timeouts().implicitlyWait(3000,TimeUnit.MILLISECONDS);
+        TimeUnit.MILLISECONDS.sleep(3000);
 
-        WebElement emailbox = getelement("/html/body/div[3]/form/div[2]/div/div[4]/div/div[1]/div");
+        driver.switchTo().frame("stripe_checkout_app");
+
+        TimeUnit.MILLISECONDS.sleep(1000);
+
+        WebElement emailbox = getelement("/html/body/div[3]/form/div[2]/div/div[4]/div/div[1]/div/input");
 
         emailbox.sendKeys("abc@abc.com");
 
+        WebElement cardnumberinput = getelement("/html/body/div[3]/form/div[2]/div/div[4]/div/div[2]/div/div/div/div/div/div/div[1]/input");
+        cardnumberinput.sendKeys(cardnumber);
 
-        Scanner ob = new Scanner("src//main//java//resources//carddetails.csv");
-        String p ="";
-        ob.useDelimiter(",");
-        String cardnumber="";
-        String month = "";
-        String year = "";
-        String cvv ="";
-        while(ob.hasNext())
-        {
-            p = ob.next();
-            String[] value = p.split(",");
-            cardnumber = value[0];
-            month = value[1];
-            year = value[2];
-            cvv = value[3];
-        }
+        WebElement date = getelement("/html/body/div[3]/form/div[2]/div/div[4]/div/div[2]/div/div/div/div/div/div/div[2]/input");
+        date.sendKeys(month);
+        date.sendKeys(year);
 
-        System.out.println(cardnumber);
+        WebElement cvvinput = getelement("/html/body/div[3]/form/div[2]/div/div[4]/div/div[2]/div/div/div/div/div/div/div[3]/input");
+        cvvinput.sendKeys(cvv);
+
+        TimeUnit.MILLISECONDS.sleep(3000);
+
+        WebElement zip = getelement("/html/body/div[3]/form/div[2]/div/div[4]/div/div[2]/div/div/div/div/div/div/div[4]/input");
+        zip.sendKeys(zipcode);
+
+        WebElement paybutton = getelement("/html/body/div[3]/form/div[2]/div/div[3]/div/div/div/button/span/span");
+        paybutton.click();
 
     }
 
-    //method to take screenshots on passing
-    public void passed()
-    {
-        File scrfile = ((TakesScreenshot)driver).getScreenshotAs(OutputType.FILE);
-        try
-        {
-            FileUtils.copyFile(scrfile, new File("src\\Screenshots\\Passed"));
-        }
-        catch (Exception e)
-        {
-            e.printStackTrace();
-        }
-
-    }
-
-    //method to take screenshots on failure
-    public void failed()
-    {
-        File scrfile = ((TakesScreenshot)driver).getScreenshotAs(OutputType.FILE);
-        try
-        {
-            FileUtils.copyFile(scrfile, new File("src\\Screenshots\\Failed"));
-        }
-        catch (Exception e)
-        {
-            e.printStackTrace();
-        }
-    }
 
     //method to close the driver
     @AfterClass
