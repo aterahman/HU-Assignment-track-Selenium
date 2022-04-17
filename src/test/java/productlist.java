@@ -66,7 +66,7 @@ public class productlist extends weathershopper {
                 productnames.add(productname.getText());
             }
         }
-        System.out.println(productnames);
+        log.info("The products on the screen are "+productnames);
     }
 
     @Test(priority = 6)
@@ -86,7 +86,7 @@ public class productlist extends weathershopper {
 
             }
         }
-        System.out.println(productprices);
+        log.info("The prices of the prducts are "+productprices);
     }
 
     @Test(priority = 7)
@@ -99,7 +99,6 @@ public class productlist extends weathershopper {
                 buttons.add(productbutton);
             }
         }
-        System.out.println(productnames);
     }
 
     @Test(priority = 8)
@@ -133,9 +132,12 @@ public class productlist extends weathershopper {
 
     }
 
+    //method to find the least expensive aloe and almond moisturizers and add them to cart
     @Test(priority = 9)
     public void comparemoisturizers() {
         if (moisturizer) {
+            log.info("Aloe products are: "+aloe);
+            log.info("Aloe product prices are: "+aloeprice);
             int leastaloeprice = 0;
             for (int i = 1; i < aloeprice.size(); i++) {
                 int price = Integer.parseInt(aloeprice.get(leastaloeprice));
@@ -144,7 +146,8 @@ public class productlist extends weathershopper {
                     leastaloeprice = i;
                 }
             }
-
+            log.info("Almond products are: "+almond);
+            log.info("Almond product prices are: "+almondprice);
             int leastalmondprice = 0;
             for (int i = 1; i < almondprice.size(); i++) {
 
@@ -155,7 +158,13 @@ public class productlist extends weathershopper {
                 }
 
             }
+
+            log.info("Least expensive aloe product is : "+aloe.get(leastaloeprice) +" at Rs"+aloeprice.get(leastaloeprice));
+            log.info("It has been added to cart");
             aloebuttons.get(leastaloeprice).click();
+
+            log.info("Least expensive almond product is : "+almond.get(leastalmondprice) +" at Rs"+almondprice.get(leastalmondprice));
+            log.info("It has been added to cart");
             almondbuttons.get(leastalmondprice).click();
 
         } else {
@@ -163,9 +172,12 @@ public class productlist extends weathershopper {
         }
     }
 
+    //method to find the least expensive spf30 and spf50 sunscreens and add them to cart
     @Test(priority = 10)
          public void comparesunscreens() {
         if (sunscreen) {
+            log.info("SPF 30 products are: "+spf30);
+            log.info("SPF 30 product prices are: "+spf30price);
             int leastspf30price = 0;
             for (int i = 1; i < spf30price.size(); i++) {
                 int price = Integer.parseInt(spf30price.get(leastspf30price));
@@ -175,6 +187,8 @@ public class productlist extends weathershopper {
                 }
             }
 
+            log.info("SPF 50 products are: "+spf50);
+            log.info("SPF 50 product prices are: "+spf50price);
             int leastspf50price = 0;
             for (int i = 1; i < spf50price.size(); i++) {
 
@@ -185,7 +199,13 @@ public class productlist extends weathershopper {
                 }
 
             }
-            spf30buttons.get(leastspf50price).click();
+
+            log.info("Least expensive SPF30 product is : "+spf30.get(leastspf30price) +" at Rs"+spf30price.get(leastspf30price));
+            log.info("It has been added to cart");
+            spf30buttons.get(leastspf30price).click();
+
+            log.info("Least expensive SPF50 product is : "+spf50.get(leastspf50price) +" at Rs"+spf50price.get(leastspf50price));
+            log.info("It has been added to cart");
             spf50buttons.get(leastspf50price).click();
 
         }
