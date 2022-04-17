@@ -196,8 +196,10 @@ public class weathershopper
         System.out.println(leastexpensiveproduct1);
         System.out.println(leastexpensiveproduct2);
         Assert.assertTrue(product1.equals(leastexpensiveproduct1) && product2.equals(leastexpensiveproduct2));
+        log.info("The products in the cart have been verified");
     }
 
+    //these variables store the payment details such as card number,expiry date, cvv, zipcode
     String cardnumber1="";
     String cardnumber2="";
     String cardnumber3="";
@@ -209,7 +211,11 @@ public class weathershopper
 
     @Test(priority = 12)
     public void excel()throws FileNotFoundException, IOException {
+
+        //stores the path of the csv file
         String path = "C:\\Users\\aterahman\\HU_assignment_Track_Selenium\\src\\main\\resources\\carddetails.csv";
+
+        //accesses the csv file
         BufferedReader br = new BufferedReader(new FileReader(path));
         String line = "";
         while ((line = br.readLine()) != null)
@@ -225,6 +231,11 @@ public class weathershopper
             zipcode=values[7];
 
         }
+        log.info("Card number is "+cardnumber1+" "+cardnumber2+" "+cardnumber3+" "+cardnumber4);
+        log.info("Expiry date of card is "+month+"/"+year);
+        log.info("Cvv of card is "+cvv);
+        log.info("Zipcode is "+zipcode);
+
     }
 
 
@@ -232,46 +243,75 @@ public class weathershopper
     @Test(priority = 13)
     public void payment()throws InterruptedException,FileNotFoundException, IOException
     {
+        //gets the element of the pay with card button
         WebElement paywithcard = getelement("/html/body/div[1]/div[3]/form/button");
 
+        //clicks the pay with card button
         paywithcard.click();
+        log.info("Pay with card button is clicked");
 
         TimeUnit.MILLISECONDS.sleep(3000);
 
+        //switches to the frame of the checkout box
         driver.switchTo().frame("stripe_checkout_app");
 
         TimeUnit.MILLISECONDS.sleep(1000);
 
+        //gets the element of the email input box
         WebElement emailbox = getelement("/html/body/div[3]/form/div[2]/div/div[4]/div/div[1]/div/input");
 
+        //enters the email
         emailbox.sendKeys("abc@abc.com");
+        log.info("Email has been entered");
 
+        //gets the element of the card number input box
         WebElement cardnumberinput = getelement("/html/body/div[3]/form/div[2]/div/div[4]/div/div[2]/div/div/div/div/div/div/div[1]/input");
+
+        //enters the card number
         cardnumberinput.sendKeys(cardnumber1);
         cardnumberinput.sendKeys(cardnumber2);
         cardnumberinput.sendKeys(cardnumber3);
         cardnumberinput.sendKeys(cardnumber4);
+        log.info("Card number has been entered");
 
         TimeUnit.MILLISECONDS.sleep(1000);
 
+        //gets the element of the expiry date input box
         WebElement date = getelement("/html/body/div[3]/form/div[2]/div/div[4]/div/div[2]/div/div/div/div/div/div/div[2]/input");
+
+        //enters month
         date.sendKeys(month);
+        //enters year
         date.sendKeys(year);
+        log.info("Expiry date of card has been entered");
 
         TimeUnit.MILLISECONDS.sleep(1000);
 
+        //gets the element of the cvv input box
         WebElement cvvinput = getelement("/html/body/div[3]/form/div[2]/div/div[4]/div/div[2]/div/div/div/div/div/div/div[3]/input");
+
+        //enters cvv
         cvvinput.sendKeys(cvv);
+        log.info("CVV has been entered");
 
         TimeUnit.MILLISECONDS.sleep(1000);
 
+        //gets the element of the zipcode input box
         WebElement zip = getelement("/html/body/div[3]/form/div[2]/div/div[4]/div/div[2]/div/div/div/div/div/div/div[4]/input");
-        zip.sendKeys(zipcode);
 
+        //enters zipcode
+        zip.sendKeys(zipcode);
+        log.info("Zipcode has been entered");
+
+        //gets the element of the pay button
         WebElement paybutton = getelement("/html/body/div[3]/form/div[2]/div/div[3]/div/div/div/button/span/span");
+
+        //clicks the pay button
         paybutton.click();
+        log.info("Pay button has been clicked");
 
         TimeUnit.MILLISECONDS.sleep(5000);
+        log.info("Payment is successful");
 
     }
 
