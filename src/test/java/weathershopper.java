@@ -182,7 +182,10 @@ public class weathershopper
 
     }
 
-    String cardnumber="";
+    String cardnumber1="";
+    String cardnumber2="";
+    String cardnumber3="";
+    String cardnumber4="";
     String month = "";
     String year = "";
     String cvv ="";
@@ -196,11 +199,14 @@ public class weathershopper
         while ((line = br.readLine()) != null)
         {
             String[] values = line.split(",");
-            cardnumber = values[0];
-            month = values[1];
-            year  = values[2];
-            cvv = values[3];
-            zipcode=values[4];
+            cardnumber1 = values[0];
+            cardnumber2 = values[1];
+            cardnumber3 = values[2];
+            cardnumber4 = values[3];
+            month = values[4];
+            year  = values[5];
+            cvv = values[6];
+            zipcode=values[7];
 
         }
     }
@@ -225,22 +231,31 @@ public class weathershopper
         emailbox.sendKeys("abc@abc.com");
 
         WebElement cardnumberinput = getelement("/html/body/div[3]/form/div[2]/div/div[4]/div/div[2]/div/div/div/div/div/div/div[1]/input");
-        cardnumberinput.sendKeys(cardnumber);
+        cardnumberinput.sendKeys(cardnumber1);
+        cardnumberinput.sendKeys(cardnumber2);
+        cardnumberinput.sendKeys(cardnumber3);
+        cardnumberinput.sendKeys(cardnumber4);
+
+        TimeUnit.MILLISECONDS.sleep(1000);
 
         WebElement date = getelement("/html/body/div[3]/form/div[2]/div/div[4]/div/div[2]/div/div/div/div/div/div/div[2]/input");
         date.sendKeys(month);
         date.sendKeys(year);
 
+        TimeUnit.MILLISECONDS.sleep(1000);
+
         WebElement cvvinput = getelement("/html/body/div[3]/form/div[2]/div/div[4]/div/div[2]/div/div/div/div/div/div/div[3]/input");
         cvvinput.sendKeys(cvv);
 
-        TimeUnit.MILLISECONDS.sleep(3000);
+        TimeUnit.MILLISECONDS.sleep(1000);
 
         WebElement zip = getelement("/html/body/div[3]/form/div[2]/div/div[4]/div/div[2]/div/div/div/div/div/div/div[4]/input");
         zip.sendKeys(zipcode);
 
         WebElement paybutton = getelement("/html/body/div[3]/form/div[2]/div/div[3]/div/div/div/button/span/span");
         paybutton.click();
+
+        TimeUnit.MILLISECONDS.sleep(5000);
 
     }
 
