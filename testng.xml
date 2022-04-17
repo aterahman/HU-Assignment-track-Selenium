@@ -1,2 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd"><suite name="All Test Suite"><test verbose="2" preserve-order="true" name="C:/Users/aterahman/HU_assignment_Track_Selenium"><classes/></test></suite>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="All Test Suite">
+<listeners>
+    <listener class-name="testnglistener"></listener>
+</listeners>
+
+
+    <test verbose="2" preserve-order="true" name="C:/Users/aterahman/HU_assignment_Track_Selenium">
+        <classes>
+            <class name="productlist"></class>
+        </classes>
+    </test>
+</suite>
