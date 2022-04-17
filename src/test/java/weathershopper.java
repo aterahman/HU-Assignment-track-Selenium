@@ -21,7 +21,6 @@ public class weathershopper
     boolean moisturizer = false;
     boolean sunscreen = false;
 
-
     //method to initilise WebDriver and the chrome driver
     @BeforeSuite
     public void setDriver()
@@ -141,9 +140,9 @@ public class weathershopper
 
             //clicking on the button
             buysunscreens.click();
-            new productlist();
 
             TimeUnit.MILLISECONDS.sleep(3000);
+
         }
         else
         {
@@ -152,116 +151,74 @@ public class weathershopper
         }
     }
 
-    @Test(priority = 5)
-    public void storeproducts() {
-        ArrayList<String> productnames = new ArrayList<>();
+//    @Test(priority = 6)
+//    public void setproduct()
+//    {
+//        productlist ob = new productlist();
+//        ob.storeproducts();
+//        ob.storeprices();
+//        ob.storebuttons();
+//        ob.sortproducts();
+//    }
 
-        int num = 0;
 
-        for (int i = 2; i <= 3; i++) {
-            for (int j = 1; j <= 3; j++) {
-                String xlpath = "/html/body/div[1]/div[" + Integer.toString(i) + "]/div[" + Integer.toString(j) + "]/p[1]";
-                WebElement productname = getelement(xlpath);
-                productnames.add(productname.getText());
-            }
-        }
-        System.out.println(productnames);
-    }
-
-    @Test(priority = 6)
-    public void storeprices()
-    {
-        ArrayList<String> productprices = new ArrayList<>();
-
-        for(int i=2;i<=3;i++)
-        {
-            for(int j = 1 ; j<=3;j++)
-            {
-                String xlpath = "/html/body/div[1]/div["+Integer.toString(i)+"]/div["+ Integer.toString(j)+"]/p[2]";
-                WebElement productprice = getelement(xlpath);
-                String p  = productprice.getText();
-                String price  = "";
-                for(int k = 0; k<p.length();k++)
-                {
-                    char ch = p.charAt(k);
-                    if(Character.isDigit(ch))
-                        price=price+ch;
-                }
-                productprices.add(price);
-
-            }
-        }
-        System.out.println(productprices);
-    }
 
     //method to add moisturizers to the cart
-    @Test(priority = 7)
-    public void addmoisturizer()throws InterruptedException
-    {
-        if(moisturizer)
-        {
-            //gets the element of i next to the "Moisturizer" title
-            WebElement i = getelement("/html/body/div[1]/div[1]/span");
-
-            //clicking on element
-            i.click();
-
-            TimeUnit.MILLISECONDS.sleep(3000);
-
-            //adding least expensive aloe moisturizer to cart
-            WebElement aloe = getelement("/html/body/div[1]/div[2]/div[3]/button");
-            aloe.click();
-
-            TimeUnit.MILLISECONDS.sleep(3000);
-
-            //adding least expensive almond moisturizer to cart
-            WebElement almond = getelement("/html/body/div[1]/div[2]/div[1]/button");
-            almond.click();
-
-            TimeUnit.MILLISECONDS.sleep(3000);
-
-        }
-        else
-        {
-            throw new SkipException("Temperature is over 19 degrees");
-        }
-    }
+//    @Test(priority = 7)
+//    public void addmoisturizer()throws InterruptedException
+//    {
+//        if(moisturizer)
+//        {
+//            //gets the element of i next to the "Moisturizer" title
+//            WebElement i = getelement("/html/body/div[1]/div[1]/span");
+//
+//            //clicking on element
+//            i.click();
+//
+//            TimeUnit.MILLISECONDS.sleep(3000);
+//
+//            //adding least expensive aloe moisturizer to cart
+//            WebElement aloe = getelement("/html/body/div[1]/div[2]/div[3]/button");
+//            aloe.click();
+//
+//            TimeUnit.MILLISECONDS.sleep(3000);
+//
+//            //adding least expensive almond moisturizer to cart
+//            WebElement almond = getelement("/html/body/div[1]/div[2]/div[1]/button");
+//            almond.click();
+//
+//            TimeUnit.MILLISECONDS.sleep(3000);
+//
+//        }
+//        else
+//        {
+//            throw new SkipException("Temperature is over 19 degrees");
+//        }
+//    }
 
     //method to add sunscreens to the cart
-    @Test(priority = 8)
-    public void addsunscreen()throws InterruptedException
-    {
-        if(sunscreen)
-        {
-            //gets the element of i next to the "Sunscreen" title"
-            WebElement i = getelement("/html/body/div[1]/div[1]/span");
-
-            //clicks on element
-            i.click();
-
-            TimeUnit.MILLISECONDS.sleep(3000);
-
-            //adding least expensive spf 50 sunscreen
-            WebElement spf50 = getelement("/html/body/div[1]/div[3]/div[1]/button");
-            spf50.click();
-
-            TimeUnit.MILLISECONDS.sleep(3000);
-
-            //adding least expensive spf 30 sunscreen
-            WebElement spf30 = getelement("/html/body/div[1]/div[2]/div[3]/button");
-            spf30.click();
-
-            TimeUnit.MILLISECONDS.sleep(3000);
-
-        }
-        else
-        {
-            throw new SkipException("Weather is under 34 degrees");
-        }
-    }
+//    @Test(priority = 8)
+//    public void addsunscreen()throws InterruptedException
+//    {
+//        if(sunscreen)
+//        {
+//            //gets the element of i next to the "Sunscreen" title"
+//            WebElement i = getelement("/html/body/div[1]/div[1]/span");
+//
+//            //clicks on element
+//            i.click();
+//
+//            TimeUnit.MILLISECONDS.sleep(3000);
+//
+//        }
+//        else
+//        {
+//            throw new SkipException("Weather is under 34 degrees");
+//        }
+//    }
 
 
-    @Test(priority = 9)
+    @Test(priority = 11)
     public void cartaccess()throws FileNotFoundException,InterruptedException
     {
         //getting the element of the cart button
@@ -274,10 +231,14 @@ public class weathershopper
 
     }
 
-    @Test(priority = 10)
-    public void payment()
+    @Test(priority = 12)
+    public void payment()throws InterruptedException
     {
+        WebElement paywithcard = getelement("/html/body/div[1]/div[3]/form/button");
 
+        paywithcard.click();
+
+        TimeUnit.MILLISECONDS.sleep(3000);
 
         WebElement emailbox = getelement("/html/body/div[3]/form/div[2]/div/div[4]/div/div[1]/div/input");
 
