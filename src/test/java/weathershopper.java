@@ -5,6 +5,7 @@ import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.testng.Assert;
 import org.testng.SkipException;
 import org.testng.annotations.*;
 
@@ -177,9 +178,21 @@ public class weathershopper
 
         //clicking on the button
         cartbutton.click();
+        log.info("Cart button has been clicked");
 
         TimeUnit.MILLISECONDS.sleep(3000);
 
+        WebElement cartitem1 = getelement("/html/body/div[1]/div[2]/table/tbody/tr[1]/td[1]");
+        String product1 = cartitem1.getText();
+        System.out.println(product1);
+
+        WebElement cartitem2 = getelement("/html/body/div[1]/div[2]/table/tbody/tr[2]/td[1]");
+        String product2 = cartitem2.getText();
+        System.out.println(product2);
+        productlist p = new productlist();
+        System.out.println(p.leastexpensiveproduct1);
+        System.out.println(p.leastexpensiveproduct2);
+        Assert.assertTrue(product1.equals(p.leastexpensiveproduct1) && product2.equals(p.leastexpensiveproduct2));
     }
 
     String cardnumber1="";
