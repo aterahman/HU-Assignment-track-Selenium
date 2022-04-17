@@ -2,10 +2,7 @@ import org.apache.commons.io.FileUtils;
 import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.testng.SkipException;
-import org.testng.annotations.AfterClass;
-import org.testng.annotations.BeforeClass;
-import org.testng.annotations.BeforeSuite;
-import org.testng.annotations.Test;
+import org.testng.annotations.*;
 
 import java.io.FileNotFoundException;
 import java.io.File;
@@ -13,13 +10,17 @@ import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.concurrent.TimeUnit;
 import java.lang.String;
+import org.apache.log4j.Logger;
+import org.apache.log4j.LogManager;
 
+@Listeners(testnglistener.class)
 //this is the base class for the tests
 public class weathershopper
 {
     WebDriver driver;
     boolean moisturizer = false;
     boolean sunscreen = false;
+    public static final Logger log = LogManager.getLogger(weathershopper.class);
 
     //method to initilise WebDriver and the chrome driver
     @BeforeSuite
@@ -27,6 +28,7 @@ public class weathershopper
     {
       System.setProperty("webdriver.chrome.driver","C:\\Selenium\\chromedriver_win32 (1)\\chromedriver.exe");
       driver = new ChromeDriver();
+      log.info("Driver is being setup");
     }
 
     //method to open the url
@@ -38,6 +40,7 @@ public class weathershopper
 
         //maximizing the window
         driver.manage().window().maximize();
+        log.info("Url is Open");
 
     }
 
@@ -77,6 +80,7 @@ public class weathershopper
         }
 
         int digitaltemperature = Integer.parseInt(temperaturedigits);
+        log.info("The Temperature is:"+temp);
         return digitaltemperature;
     }
 
@@ -104,18 +108,24 @@ public class weathershopper
             gettemperature();
             decision();
         }
+        log.info("Decision has been made as per the temperature");
 
     }
 
     @Test(priority = 3)
     public void buymoisturizer()throws InterruptedException
     {
-        if(moisturizer) {
+        if(moisturizer)
+        {
+            log.info("As per the temperature we will be buying Moisturizers");
+
             //getting the buy moisturizer button
             WebElement buymoisturizers = getelement("/html/body/div[1]/div[3]/div[1]/a/button");
 
             //clicking on the button
             buymoisturizers.click();
+
+            log.info("Buy moisturizers button has been clicked");
 
             TimeUnit.MILLISECONDS.sleep(3000);
         }
@@ -135,11 +145,15 @@ public class weathershopper
     {
         if(sunscreen)
         {
+            log.info("As per the temperature we will be buying Sunscreens");
+
             //getting the buy sunscreens button
             WebElement buysunscreens = getelement("/html/body/div[1]/div[3]/div[2]/a/button");
 
             //clicking on the button
             buysunscreens.click();
+
+            log.info("Buy sunscreens button has been clicked");
 
             TimeUnit.MILLISECONDS.sleep(3000);
 
@@ -238,9 +252,9 @@ public class weathershopper
 
         paywithcard.click();
 
-        TimeUnit.MILLISECONDS.sleep(3000);
+        driver.manage().timeouts().implicitlyWait(3000,TimeUnit.MILLISECONDS);
 
-        WebElement emailbox = getelement("/html/body/div[3]/form/div[2]/div/div[4]/div/div[1]/div/input");
+        WebElement emailbox = getelement("/html/body/div[3]/form/div[2]/div/div[4]/div/div[1]/div");
 
         emailbox.sendKeys("abc@abc.com");
 
